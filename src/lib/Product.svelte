@@ -1,14 +1,12 @@
 <script>
-  export let poke;
-  const { name, type, image, price } = poke;
+  export let chofer;
+  const { name, image, price } = chofer;
 </script>
 
 <div>
   <img width="96px" height="96px" src={image} alt={name + " image"} />
   <hr />
   <h3>{name}</h3>
-  <span>{type}</span>
-  <br />
   <span>Price: {price} USD</span>
   <br />
   <button>BUY</button>

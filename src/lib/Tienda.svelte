@@ -1,20 +1,20 @@
 <script>
   import Product from "./Product.svelte";
 
-  let pokemons = [];
+  let choferes = [];
 
-  fetch("http://127.0.0.1:3000/pokemon")
+  fetch("http://127.0.0.1:3000/choferes")
     .then((res) => res.json())
     .then((data) => {
-      pokemons = data;
+      choferes = data;
     });
 </script>
 
 <main>
   <div class="pokemons">
-    {#await pokemons then}
-      {#each pokemons as poke}
-        <Product {poke} />
+    {#await choferes then}
+      {#each choferes as chofer}
+        <Product {chofer} />
       {/each}
     {/await}
   </div>
