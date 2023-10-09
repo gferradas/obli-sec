@@ -35,9 +35,11 @@
       });
   };
 
-  if ((username && password) || (username.length > 2 && password.length > 8)) {
-    $authenticated = true;
-    login();
+  if (username && password) {
+    if (username.length > 2 && password.length > 8) {
+      $authenticated = true;
+      login();
+    }
   }
 </script>
 
