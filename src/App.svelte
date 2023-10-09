@@ -1,25 +1,23 @@
 <script>
-  import { cart } from "./helpers/cart.js";
+  import { cart, ip, authenticated } from "./helpers/cart.js";
   import Auth from "./lib/Auth.svelte";
   import Navbar from "./lib/Navbar.svelte";
   import Tienda from "./lib/Tienda.svelte";
   import Cart from "./lib/Cart.svelte";
 
-  $: ok = false;
   $: cartViewable = false;
   $: selectValue = "login";
   $cart = JSON.parse(localStorage.getItem("cart")) || [];
 
   let { username, password } = JSON.parse(localStorage.getItem("user")) || {};
-  const ip = "3.235.14.189";
 
   const logout = () => {
-    ok = false;
+    $authenticated = false;
     localStorage.removeItem("user");
   };
 
   const login = () => {
-    fetch(`http://${ip}:3000/login`, {
+    fetch(`http://${$ip}:3000/login`, {
       method: "POST",
       body: JSON.stringify({ username: username, password: password }),
       headers: {
@@ -30,36 +28,37 @@
       .then((data) => {
         console.log(data);
         if (data.ok) {
-          ok = true;
+          $authenticated = true;
         } else {
-          ok = false;
+          $authenticated = false;
         }
       });
   };
 
-  if (username.length > 2 && password.length > 8) {
-    ok = true;
+  if ((username && password) || (username.length > 2 && password.length > 8)) {
+    $authenticated = true;
     login();
   }
 </script>
 
-<Navbar {logout} {username} bind:cartViewable bind:selectValue loggedIn={ok} />
+<Navbar {logout} {username} bind:cartViewable bind:selectValue />
 <main>
-  {#if ok && cartViewable}
+  {#if $authenticated && cartViewable}
     <Cart />
   {/if}
 
-  {#if !ok}
-    <Auth {selectValue} {ip} bind:ok />
+  {#if !$authenticated}
+    <Auth {selectValue} />
   {/if}
 
-  {#if ok && !cartViewable}
-    <Tienda {ip} />
+  {#if $authenticated && !cartViewable}
+    <Tienda />
   {/if}
 </main>
 
 <style>
   main {
     margin-top: 5rem;
+    max-width: 80vw;
   }
 </style>

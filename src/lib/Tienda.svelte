@@ -1,9 +1,9 @@
 <script>
   import Product from "./Product.svelte";
-  export let ip;
+  import { ip } from "../helpers/cart.js";
   let choferes = [];
 
-  fetch(`http://${ip}:3000/choferes`)
+  fetch(`http://${$ip}:3000/choferes`)
     .then((res) => res.json())
     .then((data) => {
       choferes = data;

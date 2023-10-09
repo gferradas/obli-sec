@@ -1,6 +1,5 @@
 <script>
-  export let authenticated;
-  export let ip;
+  import { ip, authenticated } from "../helpers/cart.js";
   let failed = false;
   const register = (e) => {
     e.preventDefault();
@@ -11,7 +10,7 @@
     const password = document.getElementById("password").value;
 
     if (form.checkValidity() && username.length > 2 && password.length > 8) {
-      fetch(`http://${ip}:3000/register`, {
+      fetch(`http://${$ip}:3000/register`, {
         method: "POST",
         body: JSON.stringify({ username: username, password: password }),
         headers: {
@@ -21,7 +20,7 @@
         .then((res) => res.json())
         .then((data) => {
           if (data.ok) {
-            authenticated = true;
+            $authenticated = true;
             localStorage.setItem(
               "user",
               JSON.stringify({ username, password })
@@ -36,27 +35,25 @@
   };
 </script>
 
-<main>
-  <div class="register">
-    <h1>Register</h1>
-    <form on:submit={(e) => register(e)} id="register" action="POST">
-      <label for="username">Username:</label>
-      <input type="text" name="username" id="username" minlength="2" required />
-      <label for="password">Password:</label>
-      <input
-        type="password"
-        name="password"
-        id="password"
-        minlength="8"
-        required
-      />
-      <input type="submit" value="Register" />
-    </form>
-    {#if failed}
-      <span>Failed to register</span>
-    {/if}
-  </div>
-</main>
+<div class="register">
+  <h1>Register</h1>
+  <form on:submit={(e) => register(e)} id="register" action="POST">
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username" minlength="2" required />
+    <label for="password">Password:</label>
+    <input
+      type="password"
+      name="password"
+      id="password"
+      minlength="8"
+      required
+    />
+    <input type="submit" value="Register" />
+  </form>
+  {#if failed}
+    <span>Failed to register</span>
+  {/if}
+</div>
 
 <style>
   /* input of type button*/

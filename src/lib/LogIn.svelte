@@ -1,6 +1,5 @@
 <script>
-  export let authenticated;
-  export let ip;
+  import { ip, authenticated } from "../helpers/cart.js";
   let failed = false;
   const auth = (e) => {
     e.preventDefault();
@@ -11,7 +10,7 @@
     const password = document.getElementById("loginPassword").value;
 
     if (form.checkValidity() && username.length > 2 && password.length > 8) {
-      fetch(`http://${ip}:3000/login`, {
+      fetch(`http://${$ip}:3000/login`, {
         method: "POST",
         body: JSON.stringify({ username: username, password: password }),
         headers: {
@@ -21,7 +20,7 @@
         .then((res) => res.json())
         .then((data) => {
           if (data.ok) {
-            authenticated = true;
+            $authenticated = true;
             localStorage.setItem(
               "user",
               JSON.stringify({ username, password })
@@ -36,34 +35,32 @@
   };
 </script>
 
-<main>
-  <div class="login">
-    <h1>Login</h1>
+<div class="login">
+  <h1>Login</h1>
 
-    <form id="login" on:submit={auth} action="POST">
-      <label for="loginUsername">Username:</label>
-      <input
-        type="text"
-        name="loginUsername"
-        id="loginUsername"
-        minlength="2"
-        required
-      />
-      <label for="loginPassword">Password:</label>
-      <input
-        type="password"
-        name="loginPassword"
-        id="loginPassword"
-        minlength="8"
-        required
-      />
-      <input type="submit" value="Log In" />
-    </form>
-    {#if failed}
-      <span>Failed to login</span>
-    {/if}
-  </div>
-</main>
+  <form id="login" on:submit={auth} action="POST">
+    <label for="loginUsername">Username:</label>
+    <input
+      type="text"
+      name="loginUsername"
+      id="loginUsername"
+      minlength="2"
+      required
+    />
+    <label for="loginPassword">Password:</label>
+    <input
+      type="password"
+      name="loginPassword"
+      id="loginPassword"
+      minlength="8"
+      required
+    />
+    <input type="submit" value="Log In" />
+  </form>
+  {#if failed}
+    <span>Failed to login</span>
+  {/if}
+</div>
 
 <style>
   /* input of type button*/

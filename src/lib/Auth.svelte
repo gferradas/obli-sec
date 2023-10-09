@@ -1,19 +1,17 @@
 <script>
-  export let ok = false;
-  export let ip;
   export let selectValue;
   import LogIn from "./LogIn.svelte";
   import Register from "./Register.svelte";
 </script>
 
-<main>
+<section>
   {#if selectValue === "login"}
-    <LogIn {ip} bind:authenticated={ok} />
+    <LogIn />
   {/if}
   {#if selectValue === "register"}
-    <Register {ip} bind:authenticated={ok} />
+    <Register />
   {/if}
-</main>
+</section>
 
 <style>
 </style>

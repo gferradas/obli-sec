@@ -13,10 +13,10 @@
   };
 </script>
 
-<div class="cart">
+<section>
   <span>Total: ${total}</span>
   <button on:click={clearCart}> Clear cart </button>
-  <div class="cartInside">
+  <div class="cart">
     <ul>
       {#each $cart as item}
         <CartItem {item} />
@@ -25,18 +25,18 @@
 
     <FormCheckout />
   </div>
-</div>
+</section>
 
 <style>
-  .cart {
+  section {
     width: 80vw;
     text-align: left;
   }
-  .cart > button {
+  section > button {
     margin: 0 1rem;
   }
 
-  .cartInside {
+  .cart {
     display: flex;
     gap: 1rem;
   }

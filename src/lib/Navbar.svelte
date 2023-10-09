@@ -1,25 +1,27 @@
 <script>
-  export let loggedIn = false;
+  import { authenticated } from "../helpers/cart.js";
   export let cartViewable = false;
   export let username;
   export let logout;
   export let selectValue;
+
+  const handleCart = () => {
+    if ($authenticated) {
+      cartViewable = !cartViewable;
+    } else {
+      alert("Please log in before checking your cart");
+    }
+  };
+
+  const gotoShop = () => {
+    cartViewable = false;
+  };
 </script>
 
 <nav>
-  <a
-    on:click={() => {
-      cartViewable = false;
-    }}
-    href="/#shop">Shop</a
-  >
-  {#if loggedIn}
-    <a
-      href="/#cart"
-      on:click={() => {
-        cartViewable = true;
-      }}>{username}'s cart</a
-    >
+  <a on:click={gotoShop} href="/#shop">Shop</a>
+  {#if $authenticated}
+    <a href="/#cart" on:click={handleCart}>{username}'s cart</a>
     <a on:click={logout} href="/#login">Log Out</a>
   {:else}
     <a
