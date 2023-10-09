@@ -28,13 +28,13 @@
       on:click={() => {
         selectValue = "login";
       }}
-      href="/#login">Login</a
+      href="./#login">Login</a
     >
     <a
       on:click={() => {
         selectValue = "register";
       }}
-      href="/#register">Register</a
+      href="./#register">Register</a
     >
   {/if}
 </nav>
