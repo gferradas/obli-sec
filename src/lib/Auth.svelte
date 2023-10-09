@@ -1,31 +1,19 @@
 <script>
   export let ok = false;
+  export let ip;
+  export let selectValue;
   import LogIn from "./LogIn.svelte";
   import Register from "./Register.svelte";
-  let selectValue = "login";
-  const values = ["login", "register"];
 </script>
 
 <main>
-  <button
-    on:click={() => {
-      selectValue = selectValue == "register" ? "login" : "register";
-    }}
-    >Go to {values.filter((value) => value !== selectValue).toString()}</button
-  >
-
   {#if selectValue === "login"}
-    <LogIn bind:authenticated={ok} />
+    <LogIn {ip} bind:authenticated={ok} />
   {/if}
   {#if selectValue === "register"}
-    <Register bind:authenticated={ok} />
+    <Register {ip} bind:authenticated={ok} />
   {/if}
 </main>
 
 <style>
-  button {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-  }
 </style>

@@ -1,9 +1,9 @@
 <script>
   import Product from "./Product.svelte";
-
+  export let ip;
   let choferes = [];
 
-  fetch("http://127.0.0.1:3000/choferes")
+  fetch(`http://${ip}:3000/choferes`)
     .then((res) => res.json())
     .then((data) => {
       choferes = data;
@@ -11,7 +11,7 @@
 </script>
 
 <main>
-  <div class="pokemons">
+  <div class="productos">
     {#await choferes then}
       {#each choferes as chofer}
         <Product {chofer} />
@@ -24,9 +24,9 @@
   main {
     margin-top: 5rem;
   }
-  .pokemons {
+  .productos {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 5rem 3rem;
     max-width: 80vw;
     min-width: 300px;

@@ -1,9 +1,29 @@
-<script></script>
+<script>
+  export let loggedIn = false;
+  export let username;
+  export let logout;
+  export let selectValue;
+</script>
 
 <nav>
-  <a href="/">Shop</a>
-  <a href="/login">Log In</a>
-  <a href="/register">Register</a>
+  <a href="/#shop">Shop</a>
+  {#if loggedIn}
+    <span>Logged in as: {username}</span>
+    <a on:click={logout} href="/#login">Log Out</a>
+  {:else}
+    <a
+      on:click={() => {
+        selectValue = "login";
+      }}
+      href="/#login">Login</a
+    >
+    <a
+      on:click={() => {
+        selectValue = "register";
+      }}
+      href="/#register">Register</a
+    >
+  {/if}
 </nav>
 
 <style>

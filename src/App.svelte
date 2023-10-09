@@ -3,47 +3,49 @@
   import Navbar from "./lib/Navbar.svelte";
   import Tienda from "./lib/Tienda.svelte";
   $: ok = false;
+  $: selectValue = "login";
   let { username, password } = JSON.parse(localStorage.getItem("user")) || {};
+  const ip = "3.235.14.189";
 
-  fetch(
-    `http://127.0.0.1:3000/login?username=${username}&password=${password}`,
-    {
+  const logout = () => {
+    ok = false;
+    localStorage.removeItem("user");
+  };
+
+  const login = () => {
+    fetch(`http://${ip}:3000/login`, {
       method: "POST",
-    }
-  )
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-      if (data.ok) {
-        ok = true;
-      } else {
-        ok = false;
-      }
-    });
+      body: JSON.stringify({ username: username, password: password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.ok) {
+          ok = true;
+        } else {
+          ok = false;
+        }
+      });
+  };
+
+  if (username && password) {
+    login();
+  }
 </script>
 
-<Navbar />
+<Navbar {logout} {username} bind:selectValue loggedIn={ok} />
 <main>
   {#if !ok}
-    <Auth bind:ok />
+    <Auth {selectValue} {ip} bind:ok />
   {/if}
 
   {#if ok}
-    <button
-      on:click={() => {
-        ok = false;
-        localStorage.removeItem("user");
-      }}>Log Out</button
-    >
-
-    <Tienda />
+    <Tienda {ip} />
   {/if}
 </main>
 
 <style>
-  button {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-  }
 </style>

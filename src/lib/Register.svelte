@@ -1,5 +1,6 @@
 <script>
   export let authenticated;
+  export let ip;
   let failed = false;
   const register = (e) => {
     e.preventDefault();
@@ -10,7 +11,7 @@
     const password = document.getElementById("password").value;
 
     if (form.checkValidity() && username.length > 2 && password.length > 8) {
-      fetch(`http://127.0.0.1:3000/register`, {
+      fetch(`http://${ip}:3000/register`, {
         method: "POST",
         body: JSON.stringify({ username: username, password: password }),
         headers: {
@@ -89,7 +90,9 @@
 
   .register {
     border: 1px solid whitesmoke;
-    border-radius: 1rem;
+    border-top: 0;
+    border-bottom: 0;
+    border-radius: 2rem;
     padding: 2.5rem;
   }
 
