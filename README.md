@@ -24,6 +24,8 @@ Now you have to manually move the contents of the ./dist folder into the ./docs 
 Remove the old files beforehand (index.html, assets folder)
 DO NOT remove the image folder
 
+In the index.html file inside the docs folder put a . in the path of the links for the css js and icon files, if this is not done the webpage will only show a white screen
+
 Then you have to push the changes to github and wait for the page to update
 
 ```bash
