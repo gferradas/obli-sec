@@ -1,14 +1,17 @@
 <script>
   import { ip, authenticated } from "../helpers/cart.js";
   let failed = false;
+
+  let username = "";
+  let password = "";
+
   const register = (e) => {
     e.preventDefault();
     e.stopPropagation();
 
     const form = document.getElementById("register");
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
 
+    // @ts-ignore
     if (form.checkValidity() && username.length > 2 && password.length > 8) {
       fetch(`http://${$ip}:3000/register`, {
         method: "POST",
@@ -39,9 +42,17 @@
   <h1>Register</h1>
   <form on:submit={(e) => register(e)} id="register" action="POST">
     <label for="username">Username:</label>
-    <input type="text" name="username" id="username" minlength="2" required />
+    <input
+      bind:value={username}
+      type="text"
+      name="username"
+      id="username"
+      minlength="2"
+      required
+    />
     <label for="password">Password:</label>
     <input
+      bind:value={password}
       type="password"
       name="password"
       id="password"
@@ -56,7 +67,6 @@
 </div>
 
 <style>
-  /* input of type button*/
   input[type="submit"] {
     background-color: #4caf50;
     border: none;
@@ -66,7 +76,7 @@
     margin: 4px 2px;
     cursor: pointer;
   }
-  /*Hover effect*/
+
   input[type="submit"]:hover {
     background-color: #45a049;
   }
@@ -92,8 +102,6 @@
     border-radius: 2rem;
     padding: 2.5rem;
   }
-
-  /*All inputs except button type*/
 
   input:not([type="button"]) {
     width: 100%;

@@ -1,14 +1,16 @@
 <script>
   import { ip, authenticated } from "../helpers/cart.js";
   let failed = false;
+  let username = "";
+  let password = "";
+
   const auth = (e) => {
     e.preventDefault();
     e.stopPropagation();
 
     const form = document.getElementById("login");
-    const username = document.getElementById("loginUsername").value;
-    const password = document.getElementById("loginPassword").value;
 
+    // @ts-ignore
     if (form.checkValidity() && username.length > 2 && password.length > 8) {
       fetch(`http://${$ip}:3000/login`, {
         method: "POST",
@@ -41,6 +43,7 @@
   <form id="login" on:submit={auth} action="POST">
     <label for="loginUsername">Username:</label>
     <input
+      bind:value={username}
       type="text"
       name="loginUsername"
       id="loginUsername"
@@ -49,6 +52,7 @@
     />
     <label for="loginPassword">Password:</label>
     <input
+      bind:value={password}
       type="password"
       name="loginPassword"
       id="loginPassword"
@@ -63,7 +67,6 @@
 </div>
 
 <style>
-  /* input of type button*/
   input[type="submit"] {
     background-color: #4caf50;
     border: none;
@@ -73,7 +76,7 @@
     margin: 4px 2px;
     cursor: pointer;
   }
-  /*Hover effect*/
+
   input[type="submit"]:hover {
     background-color: #45a049;
   }
@@ -99,8 +102,6 @@
     border-radius: 2rem;
     padding: 2.5rem;
   }
-
-  /*All inputs except submit type*/
 
   input:not([type="button"]) {
     width: 100%;
