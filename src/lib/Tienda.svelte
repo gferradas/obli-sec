@@ -10,20 +10,15 @@
     });
 </script>
 
-<main>
-  <div class="productos">
-    {#await choferes then}
-      {#each choferes as chofer}
-        <Product {chofer} />
-      {/each}
-    {/await}
-  </div>
-</main>
+<div class="productos">
+  {#await choferes then}
+    {#each choferes as chofer}
+      <Product {chofer} />
+    {/each}
+  {/await}
+</div>
 
 <style>
-  main {
-    margin-top: 5rem;
-  }
   .productos {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

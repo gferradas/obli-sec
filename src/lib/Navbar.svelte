@@ -1,14 +1,25 @@
 <script>
   export let loggedIn = false;
+  export let cartViewable = false;
   export let username;
   export let logout;
   export let selectValue;
 </script>
 
 <nav>
-  <a href="/#shop">Shop</a>
+  <a
+    on:click={() => {
+      cartViewable = false;
+    }}
+    href="/#shop">Shop</a
+  >
   {#if loggedIn}
-    <span>Logged in as: {username}</span>
+    <a
+      href="/#cart"
+      on:click={() => {
+        cartViewable = true;
+      }}>{username}'s cart</a
+    >
     <a on:click={logout} href="/#login">Log Out</a>
   {:else}
     <a
