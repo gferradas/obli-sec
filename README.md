@@ -13,7 +13,7 @@ cd obli-sec
 npm i
 ```
 
-After that the IP is in "./src/App.svelte" in the ip const.
+After that the IP is in "./src/helpers/cart.js" in the const ip;
 Later the only thing you have to do is build the app
 
 ```bash
