@@ -1,5 +1,5 @@
 <script>
-  import { ip, authenticated } from "../helpers/cart.js";
+  import { ip, authenticated } from "../helpers/writables";
   let failed = false;
 
   let username = "";

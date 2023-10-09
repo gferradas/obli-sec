@@ -1,5 +1,5 @@
 <script>
-  import { authenticated } from "../helpers/cart.js";
+  import { authenticated } from "../helpers/writables.js";
   export let cartViewable = false;
   export let username;
   export let logout;

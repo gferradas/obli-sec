@@ -1,6 +1,6 @@
 <script>
   import Product from "./Product.svelte";
-  import { ip } from "../helpers/cart.js";
+  import { ip } from "../helpers/writables";
   let choferes = [];
 
   fetch(`http://${$ip}:3000/choferes`)

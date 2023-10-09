@@ -1,5 +1,5 @@
 <script>
-  import { cart } from "../helpers/cart";
+  import { cart } from "../helpers/writables";
   export let chofer;
   const { name, image, price } = chofer;
 

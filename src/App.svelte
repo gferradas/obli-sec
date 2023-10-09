@@ -1,5 +1,5 @@
 <script>
-  import { cart, ip, authenticated } from "./helpers/cart.js";
+  import { cart, ip, authenticated } from "./helpers/writables";
   import Auth from "./lib/Auth.svelte";
   import Navbar from "./lib/Navbar.svelte";
   import Tienda from "./lib/Tienda.svelte";

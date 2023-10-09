@@ -1,5 +1,5 @@
 <script>
-  import { cart } from "../helpers/cart";
+  import { cart } from "../helpers/writables";
   import FormCheckout from "./FormCheckout.svelte";
 
   $: total = $cart.reduce((acc, item) => {

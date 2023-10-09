@@ -13,7 +13,7 @@ cd obli-sec
 npm i
 ```
 
-After that the IP is in "./src/helpers/cart.js" in the const ip;
+After that the IP is in "./src/helpers/writables.js" in the const ip;
 Later the only thing you have to do is build the app
 
 ```bash
