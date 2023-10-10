@@ -123,7 +123,7 @@
 
   ul {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, 1fr);
     list-style: none;
     gap: 1rem 2rem;
     max-height: 80vh;

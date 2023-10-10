@@ -4,35 +4,34 @@
   let username = "";
   let password = "";
 
-  const auth = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  let form;
 
-    const form = document.getElementById("login");
+  const auth = async () => {
+    if (!form.checkValidity() || (username.length < 2 && password.length < 8)) {
+      alert("Invalid data");
+      return;
+    }
 
-    // @ts-ignore
-    if (form.checkValidity() && username.length > 2 && password.length > 8) {
-      fetch(`http://${$ip}:3000/login`, {
+    try {
+      const res = await fetch(`http://${$ip}:3000/login`, {
         method: "POST",
         body: JSON.stringify({ username: username, password: password }),
         headers: {
           "Content-Type": "application/json",
         },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.ok) {
-            $authenticated = true;
-            localStorage.setItem(
-              "user",
-              JSON.stringify({ username, password })
-            );
-          } else {
-            failed = true;
-          }
-        });
-    } else {
-      alert("Invalid data");
+      });
+
+      const data = await res.json();
+
+      if (data.ok) {
+        $authenticated = true;
+        console.log(data);
+        localStorage.setItem("user", JSON.stringify({ username, password }));
+      } else {
+        failed = true;
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 </script>
@@ -40,7 +39,12 @@
 <div class="login">
   <h1>Login</h1>
 
-  <form id="login" on:submit={auth} action="POST">
+  <form
+    bind:this={form}
+    id="login"
+    on:submit|preventDefault|stopPropagation={auth}
+    action="POST"
+  >
     <label for="loginUsername">Username:</label>
     <input
       bind:value={username}

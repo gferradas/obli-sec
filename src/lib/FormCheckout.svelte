@@ -7,20 +7,27 @@
   let state = "";
   let zip = "";
 
-  const submitForm = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  let form;
 
+  const submitForm = async () => {
     // check if data is valid
-    if (
-      name === "" ||
-      email === "" ||
-      address === "" ||
-      city === "" ||
-      state === "" ||
-      zip === ""
-    ) {
+
+    if (!form.checkValidity()) {
+      return;
+    }
+
+    if (!name || !email || !address || !city || !state || !zip) {
       alert("Please fill out all fields");
+      return;
+    }
+
+    if (name.length < 2) {
+      alert("Please enter a valid name");
+      return;
+    }
+
+    if (!email.includes("@")) {
+      alert("Please enter a valid email address");
       return;
     }
 
@@ -47,21 +54,25 @@
 
 <div class="formCheckout">
   <h2>Checkout</h2>
-  <form method="post" on:submit={(e) => submitForm(e)}>
+  <form
+    bind:this={form}
+    method="post"
+    on:submit|preventDefault|stopPropagation={submitForm}
+  >
     <label for="name">Name</label>
-    <input bind:value={name} type="text" id="name" />
+    <input bind:value={name} type="text" id="name" minlength="2" />
 
     <label for="email">Email</label>
     <input bind:value={email} type="email" id="email" />
 
     <label for="address">Address</label>
-    <input bind:value={address} type="text" id="address" />
+    <input bind:value={address} type="text" id="address" minlength="2" />
 
     <label for="city">City</label>
-    <input bind:value={city} type="text" id="city" />
+    <input bind:value={city} type="text" id="city" minlength="2" />
 
     <label for="state">State</label>
-    <input bind:value={state} type="text" id="state" />
+    <input bind:value={state} type="text" id="state" minlength="2" />
 
     <label for="zip">Zip</label>
     <input bind:value={zip} type="text" id="zip" />

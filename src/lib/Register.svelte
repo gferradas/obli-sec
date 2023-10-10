@@ -5,42 +5,45 @@
   let username = "";
   let password = "";
 
-  const register = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  let form;
 
-    const form = document.getElementById("register");
+  const register = async () => {
+    if (!form.checkValidity() || username.length < 2 || password.length < 8) {
+      alert("Invalid data");
+      return;
+    }
 
-    // @ts-ignore
-    if (form.checkValidity() && username.length > 2 && password.length > 8) {
-      fetch(`http://${$ip}:3000/register`, {
+    try {
+      const res = await fetch(`http://${$ip}:3000/register`, {
         method: "POST",
         body: JSON.stringify({ username: username, password: password }),
         headers: {
           "Content-Type": "application/json",
         },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.ok) {
-            $authenticated = true;
-            localStorage.setItem(
-              "user",
-              JSON.stringify({ username, password })
-            );
-          } else {
-            failed = true;
-          }
-        });
-    } else {
-      alert("Invalid data");
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        $authenticated = true;
+        console.log(data);
+        localStorage.setItem("user", JSON.stringify({ username, password }));
+      } else {
+        failed = true;
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 </script>
 
 <div class="register">
   <h1>Register</h1>
-  <form on:submit={(e) => register(e)} id="register" action="POST">
+  <form
+    bind:this={form}
+    on:submit|preventDefault|stopPropagation={register}
+    id="register"
+    action="POST"
+  >
     <label for="username">Username:</label>
     <input
       bind:value={username}
