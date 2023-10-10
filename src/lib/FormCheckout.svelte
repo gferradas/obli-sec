@@ -1,5 +1,6 @@
 <script>
-  import { ip } from "../helpers/writables";
+  import { ip, cart, user } from "../helpers/writables";
+  import Popup from "./Popup.svelte";
   let name = "";
   let email = "";
   let address = "";
@@ -31,7 +32,7 @@
       return;
     }
 
-    const data = {
+    const address_content = {
       name,
       email,
       address,
@@ -40,15 +41,47 @@
       zip,
     };
 
-    const res = await fetch(`${ip}/checkout`, {
+    const order_content = $cart;
+    console.log(order_content);
+
+    const res = await fetch(`${$ip}/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ $user, order_content, address_content }),
     });
-    const json = await res.json();
-    console.log(json);
+    const datas = await res.json();
+    if (datas.ok) {
+      new Popup({
+        target: document.getElementById("popups"),
+        props: {
+          message: "Order placed",
+          duration: 2000,
+          type: "success",
+        },
+      });
+
+      $cart = [];
+      localStorage.setItem("cart", JSON.stringify($cart));
+      name = "";
+      email = "";
+      address = "";
+      city = "";
+      state = "";
+      zip = "";
+    } else {
+      new Popup({
+        target: document.getElementById("popups"),
+        props: {
+          message: "Order failed, try again later",
+          duration: 2000,
+          type: "failed",
+        },
+      });
+    }
+
+    console.log(datas);
   };
 </script>
 

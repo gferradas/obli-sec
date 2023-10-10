@@ -14,7 +14,7 @@
     }
 
     try {
-      const res = await fetch(`http://${$ip}:3000/register`, {
+      const res = await fetch(`${$ip}/register`, {
         method: "POST",
         body: JSON.stringify({ username: username, password: password }),
         headers: {

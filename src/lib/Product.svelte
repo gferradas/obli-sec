@@ -2,18 +2,18 @@
   import { cart } from "../helpers/writables";
   import Popup from "./Popup.svelte";
   export let chofer;
-  const { name, image, price } = chofer;
+  const { name, image, price, id } = chofer;
 
   const addToCart = () => {
     if ($cart.some((item) => item.name === name)) {
       $cart = $cart.map((item) => {
-        if (item.name === name) {
+        if (item.id === id) {
           item.quantity += 1;
         }
         return item;
       });
     } else {
-      $cart = [...$cart, { name, image, price, quantity: 1 }];
+      $cart = [...$cart, { name, image, price, quantity: 1, id }];
     }
 
     $cart = $cart;

@@ -18,7 +18,7 @@
   };
 
   const login = () => {
-    fetch(`http://${$ip}:3000/login`, {
+    fetch(`${$ip}/login`, {
       method: "POST",
       body: JSON.stringify({ username: username, password: password }),
       headers: {

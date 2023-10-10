@@ -13,7 +13,7 @@
     }
 
     try {
-      const res = await fetch(`http://${$ip}:3000/login`, {
+      const res = await fetch(`${$ip}/login`, {
         method: "POST",
         body: JSON.stringify({ username: username, password: password }),
         headers: {

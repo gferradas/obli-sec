@@ -1,14 +1,15 @@
 <script>
   import Product from "./Product.svelte";
-  import { ip } from "../helpers/writables";
+  import { ip, choferes } from "../helpers/writables";
   import {
     sortByName,
     sortByNameDesc,
     sortByPrice,
     sortByPriceDesc,
   } from "../helpers/sorts";
+  import Spinner from "./Spinner.svelte";
+  import Popup from "./Popup.svelte";
 
-  $: choferes = [];
   let sortMethod;
 
   const handleSort = () => {
@@ -25,11 +26,22 @@
     choferes = choferes;
   };
 
-  if (!choferes) {
-    fetch(`http://${$ip}:3000/choferes`)
+  if ($choferes.length === 0) {
+    fetch(`${$ip}/choferes`)
       .then((res) => res.json())
       .then((data) => {
-        choferes = data;
+        $choferes = data;
+      })
+      .catch((err) => {
+        console.log(err);
+        new Popup({
+          target: document.getElementById("popups"),
+          props: {
+            message: "Failed to fetch choferes " + err,
+            duration: 2000,
+            type: "failed",
+          },
+        });
       });
   }
 </script>
@@ -43,8 +55,12 @@
   <option value="priceDesc">Price (high to low)</option>
 </select>
 <div class="productos">
+  {#if $choferes.length === 0}
+    <Spinner />
+  {/if}
+
   {#await choferes then}
-    {#each choferes as chofer (chofer)}
+    {#each $choferes as chofer (chofer)}
       <Product {chofer} />
     {/each}
   {/await}
