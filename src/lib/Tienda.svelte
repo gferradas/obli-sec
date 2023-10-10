@@ -14,16 +14,16 @@
 
   const handleSort = () => {
     if (sortMethod === "name") {
-      choferes.sort(sortByName);
+      $choferes.sort(sortByName);
     } else if (sortMethod === "nameDesc") {
-      choferes.sort(sortByNameDesc);
+      $choferes.sort(sortByNameDesc);
     } else if (sortMethod === "price") {
-      choferes.sort(sortByPrice);
+      $choferes.sort(sortByPrice);
     } else if (sortMethod === "priceDesc") {
-      choferes.sort(sortByPriceDesc);
+      $choferes.sort(sortByPriceDesc);
     }
 
-    choferes = choferes;
+    $choferes = $choferes;
   };
 
   if ($choferes.length === 0) {
