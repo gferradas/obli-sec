@@ -1,28 +1,64 @@
 <script>
   import Product from "./Product.svelte";
   import { ip } from "../helpers/writables";
-  let choferes = [];
+  import {
+    sortByName,
+    sortByNameDesc,
+    sortByPrice,
+    sortByPriceDesc,
+  } from "../helpers/sorts";
 
-  fetch(`http://${$ip}:3000/choferes`)
-    .then((res) => res.json())
-    .then((data) => {
-      choferes = data;
-    });
+  $: choferes = [];
+  let sortMethod;
+
+  const handleSort = () => {
+    if (sortMethod === "name") {
+      choferes.sort(sortByName);
+    } else if (sortMethod === "nameDesc") {
+      choferes.sort(sortByNameDesc);
+    } else if (sortMethod === "price") {
+      choferes.sort(sortByPrice);
+    } else if (sortMethod === "priceDesc") {
+      choferes.sort(sortByPriceDesc);
+    }
+
+    choferes = choferes;
+  };
+
+  if (!choferes) {
+    fetch(`http://${$ip}:3000/choferes`)
+      .then((res) => res.json())
+      .then((data) => {
+        choferes = data;
+      });
+  }
 </script>
 
+<span>Sort By: </span>
+<select bind:value={sortMethod} on:change={handleSort} name="sort" id="sort">
+  <option selected disabled value="">-</option>
+  <option value="name">A-Z</option>
+  <option value="nameDesc">Z-A</option>
+  <option value="price">Price (low to high)</option>
+  <option value="priceDesc">Price (high to low)</option>
+</select>
 <div class="productos">
   {#await choferes then}
-    {#each choferes as chofer}
+    {#each choferes as chofer (chofer)}
       <Product {chofer} />
     {/each}
   {/await}
 </div>
 
 <style>
+  select {
+    margin: 1rem auto;
+  }
+
   .productos {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 5rem 3rem;
+    gap: 3rem;
     max-width: 80vw;
     min-width: 300px;
     margin: auto;

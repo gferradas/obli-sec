@@ -44,7 +44,6 @@
     gap: 1rem;
     border: 2px solid whitesmoke;
     border-radius: 5rem;
-    padding: 0.5rem;
     max-width: 100%;
     transition: all 100ms cubic-bezier(0.215, 0.61, 0.355, 1);
   }
