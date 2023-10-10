@@ -4,6 +4,7 @@
   import Navbar from "./lib/Navbar.svelte";
   import Tienda from "./lib/Tienda.svelte";
   import Cart from "./lib/Cart.svelte";
+  import Popup from "./lib/Popup.svelte";
 
   $: cartViewable = false;
   $: selectValue = "login";
@@ -29,7 +30,15 @@
         console.log(data);
         if (data.ok) {
           $authenticated = true;
-          $user = data.user;
+          $user = username;
+          new Popup({
+            target: document.getElementById("popups"),
+            props: {
+              message: `Welcome back ${$user}`,
+              duration: 2000,
+              type: "success",
+            },
+          });
         } else {
           $authenticated = false;
         }

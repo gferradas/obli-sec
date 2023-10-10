@@ -7,21 +7,6 @@
 
   let form;
 
-  const createPopup = (type, message) => {
-    const popup = new Popup({
-      target: document.getElementById("popups"),
-      props: {
-        message: message,
-        duration: 2000,
-        type: type,
-      },
-    });
-
-    setTimeout(() => {
-      popup.$destroy();
-    }, 2150);
-  };
-
   const register = async () => {
     if (!form.checkValidity() || username.length < 2 || password.length < 8) {
       alert("Invalid data");
@@ -43,13 +28,27 @@
         $authenticated = true;
         console.log(data);
         localStorage.setItem("user", JSON.stringify({ username, password }));
-        createPopup("success", "Registered as " + username);
+        new Popup({
+          target: document.getElementById("popups"),
+          props: {
+            message: "Registered as " + username,
+            duration: 2000,
+            type: "success",
+          },
+        });
       } else {
-        createPopup("failed", "Failed to register");
+        throw new Error(data.error);
       }
     } catch (error) {
       console.log(error);
-      createPopup("failed", "Failed to register: " + error);
+      new Popup({
+        target: document.getElementById("popups"),
+        props: {
+          message: "Failed to register " + error,
+          duration: 2000,
+          type: "failed",
+        },
+      });
     }
   };
 </script>

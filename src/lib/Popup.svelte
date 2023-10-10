@@ -3,19 +3,22 @@
   export let duration;
   export let type = "success";
 
-  let div;
+  let popup;
 
   setTimeout(() => {
-    div.style.opacity = 1;
+    popup.style.opacity = 1;
   }, 100);
 
   setTimeout(() => {
-    div.style.opacity = 0;
+    popup.style.opacity = 0;
+    setTimeout(() => {
+      popup.parentNode.removeChild(popup);
+    }, 150);
   }, duration);
 </script>
 
 <div
-  bind:this={div}
+  bind:this={popup}
   style={`border-color: ${type == "success" ? "green" : "red"};`}
 >
   <p>{message}</p>

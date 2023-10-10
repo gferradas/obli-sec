@@ -1,5 +1,6 @@
 <script>
   import { authenticated, user } from "../helpers/writables.js";
+  import Popup from "./Popup.svelte";
   export let cartViewable = false;
   export let logout;
   export let selectValue;
@@ -13,6 +14,17 @@
   };
 
   const gotoShop = () => {
+    if (!$authenticated) {
+      new Popup({
+        target: document.getElementById("popups"),
+        props: {
+          message: `Please log in to access the shop`,
+          duration: 2000,
+          type: "failed",
+        },
+      });
+    }
+
     cartViewable = false;
   };
 </script>

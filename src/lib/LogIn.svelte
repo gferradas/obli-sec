@@ -6,21 +6,6 @@
 
   let form;
 
-  const createPopup = (type, message) => {
-    const popup = new Popup({
-      target: document.getElementById("popups"),
-      props: {
-        message: message,
-        duration: 2000,
-        type: type,
-      },
-    });
-
-    setTimeout(() => {
-      popup.$destroy();
-    }, 2150);
-  };
-
   const auth = async () => {
     if (!form.checkValidity() || (username.length < 2 && password.length < 8)) {
       alert("Invalid data");
@@ -43,13 +28,27 @@
         $authenticated = true;
         console.log(data);
         localStorage.setItem("user", JSON.stringify({ username, password }));
-        createPopup("success", "Logged in as " + username);
+        new Popup({
+          target: document.getElementById("popups"),
+          props: {
+            message: "Logged in as " + username,
+            duration: 2000,
+            type: "success",
+          },
+        });
       } else {
-        createPopup("failed", "Failed to login");
+        throw new Error(data.error);
       }
     } catch (error) {
       console.log(error);
-      createPopup("failed", "Failed to login: " + error);
+      new Popup({
+        target: document.getElementById("popups"),
+        props: {
+          message: "Failed to login " + error,
+          duration: 2000,
+          type: "failed",
+        },
+      });
     }
   };
 </script>

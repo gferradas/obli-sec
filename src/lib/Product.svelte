@@ -18,7 +18,7 @@
 
     $cart = $cart;
 
-    const popup = new Popup({
+    new Popup({
       target: document.getElementById("popups"),
       props: {
         message: `${name} trip added to cart`,
@@ -26,10 +26,6 @@
         type: "success",
       },
     });
-
-    setTimeout(() => {
-      popup.$destroy();
-    }, 2150);
 
     localStorage.setItem("cart", JSON.stringify($cart));
   };
