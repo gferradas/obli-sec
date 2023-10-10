@@ -1,10 +1,25 @@
 <script>
-  import { ip, authenticated } from "../helpers/writables";
-  let failed = false;
+  import Popup from "./Popup.svelte";
+  import { ip, authenticated, user } from "../helpers/writables";
   let username = "";
   let password = "";
 
   let form;
+
+  const createPopup = (type, message) => {
+    const popup = new Popup({
+      target: document.getElementById("popups"),
+      props: {
+        message: message,
+        duration: 2000,
+        type: type,
+      },
+    });
+
+    setTimeout(() => {
+      popup.$destroy();
+    }, 2150);
+  };
 
   const auth = async () => {
     if (!form.checkValidity() || (username.length < 2 && password.length < 8)) {
@@ -24,14 +39,17 @@
       const data = await res.json();
 
       if (data.ok) {
+        $user = username;
         $authenticated = true;
         console.log(data);
         localStorage.setItem("user", JSON.stringify({ username, password }));
+        createPopup("success", "Logged in as " + username);
       } else {
-        failed = true;
+        createPopup("failed", "Failed to login");
       }
     } catch (error) {
       console.log(error);
+      createPopup("failed", "Failed to login: " + error);
     }
   };
 </script>
@@ -65,9 +83,6 @@
     />
     <input type="submit" value="Log In" />
   </form>
-  {#if failed}
-    <span>Failed to login</span>
-  {/if}
 </div>
 
 <style>
@@ -112,11 +127,5 @@
     padding: 12px 20px;
     margin: 8px 0;
     box-sizing: border-box;
-  }
-  span {
-    color: rgb(245, 106, 106);
-    background-color: rgba(0, 0, 0, 0.1);
-    padding: 0.5rem 1rem;
-    border-radius: 1rem;
   }
 </style>

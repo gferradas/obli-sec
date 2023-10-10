@@ -1,5 +1,5 @@
 <script>
-  import { cart, ip, authenticated } from "./helpers/writables";
+  import { cart, ip, authenticated, user } from "./helpers/writables";
   import Auth from "./lib/Auth.svelte";
   import Navbar from "./lib/Navbar.svelte";
   import Tienda from "./lib/Tienda.svelte";
@@ -29,6 +29,7 @@
         console.log(data);
         if (data.ok) {
           $authenticated = true;
+          $user = data.user;
         } else {
           $authenticated = false;
         }
@@ -43,7 +44,7 @@
   }
 </script>
 
-<Navbar {logout} {username} bind:cartViewable bind:selectValue />
+<Navbar {logout} bind:cartViewable bind:selectValue />
 <main>
   {#if $authenticated && cartViewable}
     <Cart />

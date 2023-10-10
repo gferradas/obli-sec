@@ -1,7 +1,6 @@
 <script>
-  import { authenticated } from "../helpers/writables.js";
+  import { authenticated, user } from "../helpers/writables.js";
   export let cartViewable = false;
-  export let username;
   export let logout;
   export let selectValue;
 
@@ -21,7 +20,7 @@
 <nav>
   <a on:click={gotoShop} href="./#shop">Shop</a>
   {#if $authenticated}
-    <a href="./#cart" on:click={handleCart}>{username}'s cart</a>
+    <a href="./#cart" on:click={handleCart}>{$user}'s cart</a>
     <a on:click={logout} href="./#login">Log Out</a>
   {:else}
     <a

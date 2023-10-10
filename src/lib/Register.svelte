@@ -1,11 +1,26 @@
 <script>
-  import { ip, authenticated } from "../helpers/writables";
-  let failed = false;
+  import Popup from "./Popup.svelte";
+  import { ip, authenticated, user } from "../helpers/writables";
 
   let username = "";
   let password = "";
 
   let form;
+
+  const createPopup = (type, message) => {
+    const popup = new Popup({
+      target: document.getElementById("popups"),
+      props: {
+        message: message,
+        duration: 2000,
+        type: type,
+      },
+    });
+
+    setTimeout(() => {
+      popup.$destroy();
+    }, 2150);
+  };
 
   const register = async () => {
     if (!form.checkValidity() || username.length < 2 || password.length < 8) {
@@ -24,14 +39,17 @@
       const data = await res.json();
 
       if (data.ok) {
+        $user = username;
         $authenticated = true;
         console.log(data);
         localStorage.setItem("user", JSON.stringify({ username, password }));
+        createPopup("success", "Registered as " + username);
       } else {
-        failed = true;
+        createPopup("failed", "Failed to register");
       }
     } catch (error) {
       console.log(error);
+      createPopup("failed", "Failed to register: " + error);
     }
   };
 </script>
@@ -64,9 +82,6 @@
     />
     <input type="submit" value="Register" />
   </form>
-  {#if failed}
-    <span>Failed to register</span>
-  {/if}
 </div>
 
 <style>
