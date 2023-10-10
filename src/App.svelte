@@ -56,11 +56,24 @@
   {#if $authenticated && !cartViewable}
     <Tienda />
   {/if}
+
+  <div id="popups" class="popups" />
 </main>
 
 <style>
   main {
     margin-top: 3.5rem;
     max-width: 80vw;
+  }
+
+  .popups {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 1000;
+
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 1rem;
   }
 </style>

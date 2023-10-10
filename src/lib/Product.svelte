@@ -1,5 +1,6 @@
 <script>
   import { cart } from "../helpers/writables";
+  import Popup from "./Popup.svelte";
   export let chofer;
   const { name, image, price } = chofer;
 
@@ -16,6 +17,19 @@
     }
 
     $cart = $cart;
+
+    const popup = new Popup({
+      target: document.getElementById("popups"),
+      props: {
+        message: `${name} trip added to cart`,
+        duration: 2000,
+        type: "success",
+      },
+    });
+
+    setTimeout(() => {
+      popup.$destroy();
+    }, 2150);
 
     localStorage.setItem("cart", JSON.stringify($cart));
   };
