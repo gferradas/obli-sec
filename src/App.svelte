@@ -14,40 +14,54 @@
 
   const logout = () => {
     $authenticated = false;
+    $cart = [];
+    $user = "";
+    localStorage.removeItem("cart");
     localStorage.removeItem("user");
   };
 
-  const login = () => {
-    fetch(`${$ip}/login`, {
-      method: "POST",
-      body: JSON.stringify({ username: username, password: password }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.ok) {
-          $authenticated = true;
-          $user = username;
-          new Popup({
-            target: document.getElementById("popups"),
-            props: {
-              message: `Welcome back ${$user}`,
-              duration: 2000,
-              type: "success",
-            },
-          });
-        } else {
-          $authenticated = false;
-        }
+  const login = async () => {
+    try {
+      const res = await fetch(`${$ip}/login`, {
+        method: "POST",
+        body: JSON.stringify({ username: username, password: password }),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
+
+      const data = await res.json();
+      console.log(data);
+
+      if (data.ok) {
+        $authenticated = true;
+        $user = username;
+        new Popup({
+          target: document.getElementById("popups"),
+          props: {
+            message: `Welcome back ${$user}`,
+            duration: 2000,
+            type: "success",
+          },
+        });
+      } else {
+        $authenticated = false;
+      }
+    } catch (error) {
+      console.log(error);
+      new Popup({
+        target: document.getElementById("popups"),
+        props: {
+          message: `Error: ${error}`,
+          duration: 2000,
+          type: "error",
+        },
+      });
+    }
   };
 
   if (username && password) {
     if (username.length > 2 && password.length > 8) {
-      $authenticated = true;
       login();
     }
   }
@@ -78,12 +92,12 @@
 
   .popups {
     position: fixed;
-    bottom: 1rem;
+    top: 1rem;
     right: 1rem;
     z-index: 1000;
 
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     gap: 1rem;
   }
 </style>

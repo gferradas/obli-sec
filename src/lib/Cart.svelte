@@ -11,9 +11,9 @@
     localStorage.setItem("cart", JSON.stringify($cart));
   };
 
-  const reduceQuantity = (itemName) => {
+  const reduceQuantity = (id) => {
     $cart = $cart.map((item) => {
-      if (item.name === itemName) {
+      if (item.id === id) {
         item.quantity -= 1;
       }
       return item;
@@ -23,9 +23,9 @@
     localStorage.setItem("cart", JSON.stringify($cart));
   };
 
-  const increaseQuantity = (itemName) => {
+  const increaseQuantity = (id) => {
     $cart = $cart.map((item) => {
-      if (item.name === itemName) {
+      if (item.id === id) {
         item.quantity += 1;
       }
       return item;
@@ -44,7 +44,7 @@
 
       <ul>
         <hr />
-        {#each $cart as { image, price, quantity, name }}
+        {#each $cart as { image, price, quantity, name, id }}
           <li>
             <img width="96px" height="96px" src={image} alt={name + " image"} />
 
@@ -55,14 +55,14 @@
               <span class="quantity">Quantity: {quantity}</span>
             </div>
 
-            <div>
+            <div class="botonera">
               <button
                 class="quantityChange green"
-                on:click={() => increaseQuantity(name)}>+</button
+                on:click={() => increaseQuantity(id)}>+</button
               >
               <button
                 class="quantityChange red"
-                on:click={() => reduceQuantity(name)}>-</button
+                on:click={() => reduceQuantity(id)}>-</button
               >
             </div>
           </li>
@@ -107,11 +107,13 @@
     gap: 1rem;
     align-items: center;
     flex-direction: column;
+    width: 50%;
   }
 
   .cart {
     display: flex;
     gap: 1rem;
+    width: 100%;
   }
 
   .total {
@@ -128,7 +130,7 @@
     gap: 1rem 2rem;
     max-height: 80vh;
     max-width: 45vw;
-    width: 40vw;
+    width: 100%;
     overflow-y: scroll;
     justify-items: center;
   }
@@ -170,5 +172,44 @@
     width: 100%;
     max-width: 80%;
     border: 1px solid white;
+  }
+
+  /** Media query that changes the flex direction of the cart class on mobile */
+  @media (max-width: 768px) {
+    .cart {
+      flex-direction: column;
+    }
+
+    .total {
+      width: 100%;
+    }
+
+    .left {
+      width: 100%;
+    }
+
+    ul {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    li {
+      flex-direction: column;
+    }
+
+    .botonera {
+      display: flex;
+      flex-direction: row-reverse;
+    }
+
+    .green {
+      color: green;
+      border-radius: 0rem 1rem 1rem 0;
+    }
+
+    .red {
+      color: red;
+      border-radius: 1rem 0 0 1rem;
+    }
   }
 </style>

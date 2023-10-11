@@ -54,8 +54,12 @@
     gap: 1rem;
     border: 2px solid whitesmoke;
     border-radius: 5rem;
-    max-width: 100%;
+    max-width: 80vw;
     transition: all 100ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  .product:hover {
+    border-color: goldenrod;
   }
 
   .product > div {
@@ -64,7 +68,6 @@
     justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
-    gap: 1rem;
     width: 100%;
   }
 
@@ -75,12 +78,24 @@
     align-items: flex-start;
   }
 
-  svg {
-    fill: #fff;
+  button {
+    background-color: rgba(20, 20, 20, 0.85);
+    border-radius: 24rem;
+    border: none;
+    transition: all 100ms cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 
-  div:hover {
-    border-color: goldenrod;
+  button:hover {
+    background-color: rgba(0, 0, 0, 0.85);
+  }
+
+  button:hover svg {
+    fill: goldenrod;
+  }
+
+  svg {
+    fill: #fff;
+    transition: all 100ms cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 
   img {

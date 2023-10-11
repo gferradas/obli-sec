@@ -51,6 +51,7 @@
       },
       body: JSON.stringify({ $user, order_content, address_content }),
     });
+
     const datas = await res.json();
     if (datas.ok) {
       new Popup({
@@ -122,10 +123,16 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    max-width: 35vw;
+    max-width: 50%;
   }
 
   label {
     font-weight: bold;
+  }
+
+  @media (max-width: 768px) {
+    form {
+      max-width: 100%;
+    }
   }
 </style>

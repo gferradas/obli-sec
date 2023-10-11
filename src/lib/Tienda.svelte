@@ -46,7 +46,7 @@
   }
 </script>
 
-<span>Sort By: </span>
+<label for="sort">Sort By: </label>
 <select bind:value={sortMethod} on:change={handleSort} name="sort" id="sort">
   <option selected disabled value="">-</option>
   <option value="name">A-Z</option>
@@ -76,7 +76,6 @@
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 3rem;
     max-width: 80vw;
-    min-width: 300px;
     margin: auto;
   }
 </style>
