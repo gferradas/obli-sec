@@ -1,6 +1,6 @@
 <script>
   import Product from "./Product.svelte";
-  import { ip, choferes, client } from "../helpers/writables";
+  import { choferes, client } from "../helpers/writables";
   import {
     sortByName,
     sortByNameDesc,

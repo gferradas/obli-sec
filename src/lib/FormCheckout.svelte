@@ -1,5 +1,5 @@
 <script>
-  import { ip, cart, user } from "../helpers/writables";
+  import { client, cart, user } from "../helpers/writables";
   import Popup from "./Popup.svelte";
   let name = "";
   let email = "";
@@ -43,16 +43,19 @@
 
     const order_content = $cart;
 
-    const res = await fetch(`${$ip}/checkout`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ $user, order_content, address_content }),
-    });
+    try {
+      const res = await client.post("/checkout", {
+        $user,
+        order_content,
+        address_content,
+      });
 
-    const datas = await res.json();
-    if (datas.ok) {
+      const { data } = await res;
+
+      if (!data.ok) {
+        throw new Error(data.error);
+      }
+
       new Popup({
         target: document.getElementById("popups"),
         props: {
@@ -70,7 +73,8 @@
       city = "";
       state = "";
       zip = "";
-    } else {
+    } catch (error) {
+      console.log(error);
       new Popup({
         target: document.getElementById("popups"),
         props: {
@@ -80,8 +84,6 @@
         },
       });
     }
-
-    console.log(datas);
   };
 </script>
 

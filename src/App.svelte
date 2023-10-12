@@ -38,14 +38,6 @@
 
       $authenticated = true;
       $user = username;
-      new Popup({
-        target: document.getElementById("popups"),
-        props: {
-          message: `Welcome back ${$user}`,
-          duration: 2000,
-          type: "success",
-        },
-      });
     } catch (error) {
       console.log(error);
       new Popup({

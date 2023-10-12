@@ -1,6 +1,6 @@
 <script>
   import Popup from "./Popup.svelte";
-  import { ip, authenticated, user, client } from "../helpers/writables";
+  import { authenticated, user, client } from "../helpers/writables";
   let username = "";
   let password = "";
 

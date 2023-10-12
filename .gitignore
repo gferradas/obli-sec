@@ -4,3 +4,5 @@ public
 *.sql
 docker*
 *.zip
+dist
+.vscode
