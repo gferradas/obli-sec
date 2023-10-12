@@ -1,11 +1,13 @@
 <script>
-  import { cart, ip, authenticated, user } from "./helpers/writables";
+  import { cart, authenticated, user, client } from "./helpers/writables";
   import Auth from "./lib/Auth.svelte";
   import Navbar from "./lib/Navbar.svelte";
   import Tienda from "./lib/Tienda.svelte";
   import Cart from "./lib/Cart.svelte";
   import Popup from "./lib/Popup.svelte";
+  import Spinner from "./lib/Spinner.svelte";
 
+  let loading = true;
   $: cartViewable = false;
   $: selectValue = "login";
   $cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -22,31 +24,28 @@
 
   const login = async () => {
     try {
-      const res = await fetch(`${$ip}/login`, {
-        method: "POST",
-        body: JSON.stringify({ username: username, password: password }),
-        headers: {
-          "Content-Type": "application/json",
+      const res = await client.post("/login", { username, password });
+
+      if (res.statusText !== "OK") {
+        throw new Error("Error connecting to server");
+      }
+      const { data } = await res;
+
+      if (!data.ok) {
+        $authenticated = false;
+        throw new Error(data.error);
+      }
+
+      $authenticated = true;
+      $user = username;
+      new Popup({
+        target: document.getElementById("popups"),
+        props: {
+          message: `Welcome back ${$user}`,
+          duration: 2000,
+          type: "success",
         },
       });
-
-      const data = await res.json();
-      console.log(data);
-
-      if (data.ok) {
-        $authenticated = true;
-        $user = username;
-        new Popup({
-          target: document.getElementById("popups"),
-          props: {
-            message: `Welcome back ${$user}`,
-            duration: 2000,
-            type: "success",
-          },
-        });
-      } else {
-        $authenticated = false;
-      }
     } catch (error) {
       console.log(error);
       new Popup({
@@ -58,6 +57,7 @@
         },
       });
     }
+    loading = false;
   };
 
   if (username && password) {
@@ -69,16 +69,20 @@
 
 <Navbar {logout} bind:cartViewable bind:selectValue />
 <main>
-  {#if $authenticated && cartViewable}
-    <Cart />
-  {/if}
+  {#if loading}
+    <Spinner />
+  {:else}
+    {#if $authenticated && cartViewable}
+      <Cart />
+    {/if}
 
-  {#if !$authenticated}
-    <Auth {selectValue} />
-  {/if}
+    {#if !$authenticated}
+      <Auth {selectValue} />
+    {/if}
 
-  {#if $authenticated && !cartViewable}
-    <Tienda />
+    {#if $authenticated && !cartViewable}
+      <Tienda />
+    {/if}
   {/if}
 
   <div id="popups" class="popups" />

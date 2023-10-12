@@ -35,44 +35,54 @@
 </script>
 
 <section>
-  <div class="cart">
-    <div class="left">
-      <div class="total">
-        <span><strong>Total:</strong> ${total}</span>
-        <button on:click={clearCart}> Clear cart </button>
+  {#if $cart.length > 0}
+    <div class="cart">
+      <div class="left">
+        <div class="total">
+          <span><strong>Total:</strong> ${total}</span>
+          <button on:click={clearCart}> Clear cart </button>
+        </div>
+
+        <ul>
+          <hr />
+          {#each $cart as { image, price, quantity, name, id }}
+            <li>
+              <img
+                width="96px"
+                height="96px"
+                src={image}
+                alt={name + " image"}
+              />
+
+              <div class="data">
+                <span class="name">{name}</span>
+                <span class="price"> ~ ${price}</span>
+                <br />
+                <span class="quantity">Quantity: {quantity}</span>
+              </div>
+
+              <div class="botonera">
+                <button
+                  class="quantityChange green"
+                  on:click={() => increaseQuantity(id)}>+</button
+                >
+                <button
+                  class="quantityChange red"
+                  on:click={() => reduceQuantity(id)}>-</button
+                >
+              </div>
+            </li>
+            <hr />
+          {/each}
+        </ul>
       </div>
 
-      <ul>
-        <hr />
-        {#each $cart as { image, price, quantity, name, id }}
-          <li>
-            <img width="96px" height="96px" src={image} alt={name + " image"} />
-
-            <div class="data">
-              <span class="name">{name}</span>
-              <span class="price"> ~ ${price}</span>
-              <br />
-              <span class="quantity">Quantity: {quantity}</span>
-            </div>
-
-            <div class="botonera">
-              <button
-                class="quantityChange green"
-                on:click={() => increaseQuantity(id)}>+</button
-              >
-              <button
-                class="quantityChange red"
-                on:click={() => reduceQuantity(id)}>-</button
-              >
-            </div>
-          </li>
-          <hr />
-        {/each}
-      </ul>
+      <FormCheckout />
     </div>
-
-    <FormCheckout />
-  </div>
+  {:else}
+    <h1 style="text-align: center;">Cart is empty</h1>
+    <p style="text-align: center;">Buy something</p>
+  {/if}
 </section>
 
 <style>
@@ -114,6 +124,8 @@
     display: flex;
     gap: 1rem;
     width: 100%;
+    justify-content: center;
+    align-items: center;
   }
 
   .total {
