@@ -1,6 +1,6 @@
 <script>
   import Popup from "./Popup.svelte";
-  import { ip, authenticated, user } from "../helpers/writables";
+  import { ip, authenticated, user, client } from "../helpers/writables";
 
   let username = "";
   let password = "";
@@ -14,31 +14,28 @@
     }
 
     try {
-      const res = await fetch(`${$ip}/register`, {
-        method: "POST",
-        body: JSON.stringify({ username: username, password: password }),
-        headers: {
-          "Content-Type": "application/json",
+      const res = await client.post("/register", { username, password });
+
+      if (res.statusText !== "OK") {
+        throw new Error("Error connecting to server");
+      }
+
+      const { data } = await res;
+
+      if (!data.ok) throw new Error(data.error);
+
+      $user = username;
+      $authenticated = true;
+      console.log(data);
+      localStorage.setItem("user", JSON.stringify({ username, password }));
+      new Popup({
+        target: document.getElementById("popups"),
+        props: {
+          message: "Registered as " + username,
+          duration: 2000,
+          type: "success",
         },
       });
-      const data = await res.json();
-
-      if (data.ok) {
-        $user = username;
-        $authenticated = true;
-        console.log(data);
-        localStorage.setItem("user", JSON.stringify({ username, password }));
-        new Popup({
-          target: document.getElementById("popups"),
-          props: {
-            message: "Registered as " + username,
-            duration: 2000,
-            type: "success",
-          },
-        });
-      } else {
-        throw new Error(data.error);
-      }
     } catch (error) {
       console.log(error);
       new Popup({

@@ -42,7 +42,6 @@
     };
 
     const order_content = $cart;
-    console.log(order_content);
 
     const res = await fetch(`${$ip}/checkout`, {
       method: "POST",
@@ -117,13 +116,17 @@
 
 <style>
   .formCheckout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
   }
   form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    max-width: 50%;
+    max-width: 70%;
+    width: 100%;
   }
 
   label {

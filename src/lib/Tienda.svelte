@@ -1,6 +1,6 @@
 <script>
   import Product from "./Product.svelte";
-  import { ip, choferes } from "../helpers/writables";
+  import { ip, choferes, client } from "../helpers/writables";
   import {
     sortByName,
     sortByNameDesc,
@@ -9,6 +9,7 @@
   } from "../helpers/sorts";
   import Spinner from "./Spinner.svelte";
   import Popup from "./Popup.svelte";
+  import { onMount } from "svelte";
 
   let sortMethod;
 
@@ -26,24 +27,31 @@
     $choferes = $choferes;
   };
 
-  if ($choferes.length === 0) {
-    fetch(`${$ip}/choferes`)
-      .then((res) => res.json())
-      .then((data) => {
-        $choferes = data;
-      })
-      .catch((err) => {
-        console.log(err);
-        new Popup({
-          target: document.getElementById("popups"),
-          props: {
-            message: "Failed to fetch choferes " + err,
-            duration: 2000,
-            type: "failed",
-          },
-        });
+  onMount(async () => {
+    try {
+      const res = await client.get("/choferes");
+
+      if (res.statusText !== "OK") {
+        throw new Error("Error connecting to server");
+      }
+
+      const { data } = await res;
+
+      if (!data) throw new Error(data.error);
+
+      $choferes = data;
+    } catch (error) {
+      console.log(error);
+      new Popup({
+        target: document.getElementById("popups"),
+        props: {
+          message: "Failed to fetch choferes " + error,
+          duration: 2000,
+          type: "failed",
+        },
       });
-  }
+    }
+  });
 </script>
 
 <label for="sort">Sort By: </label>
