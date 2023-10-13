@@ -1,0 +1,25 @@
+FROM oven/bun:alpine
+
+WORKDIR /app
+
+COPY app.js .
+COPY config/ ./config
+COPY routes/ ./routes
+COPY utils/ ./utils
+COPY package.json .
+COPY package-lock.json .
+COPY tienda-obli.com.key /etc/credentials/privateKey.key
+COPY tienda-obli.com.crt /etc/credentials/certificate.crt
+
+RUN bun install
+
+ENV DB_HOST="test-db.cfy52o96ucn4.us-east-1.rds.amazonaws.com"
+ENV DB_PORT="3306"
+ENV DB_USER="iota"
+ENV DB_PASS="iota12345"
+
+ENV PORT="443"
+
+EXPOSE ${PORT}
+
+CMD ["bun", "run", "app.js"]

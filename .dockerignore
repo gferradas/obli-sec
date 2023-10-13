@@ -1,0 +1,5 @@
+.env
+hash.js
+hash.txt
+docker-compose.yml
+fix*
