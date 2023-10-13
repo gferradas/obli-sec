@@ -56,6 +56,8 @@
     if (username.length > 2 && password.length > 8) {
       login();
     }
+  } else {
+    loading = false;
   }
 </script>
 
