@@ -5,3 +5,5 @@ hash.txt
 *.crt
 *.key
 *compose.yml
+*.pem
+/*.js

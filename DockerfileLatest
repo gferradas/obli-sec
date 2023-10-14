@@ -7,8 +7,8 @@ COPY routes/ ./routes
 COPY utils/ ./utils
 COPY package.json .
 COPY package-lock.json .
-COPY tienda-obli.com.key /etc/credentials/privateKey.key
-COPY tienda-obli.com.crt /etc/credentials/certificate.crt
+COPY privkey.key /etc/credentials/privateKey.key
+COPY cert.crt /etc/credentials/certificate.crt
 
 RUN npm install
 
