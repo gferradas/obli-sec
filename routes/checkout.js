@@ -11,12 +11,7 @@ router.post("/checkout", async (req, res) => {
     const { order_content, address_content } = req.body
     const { name, email, address, city, state, zip } = address_content
 
-    if (!name || !email || !address || !city || !state || !zip) {
-        res.status(400).json({ ok: false, message: 'Invalid data' });
-        return;
-    }
-
-    if (name.length < 2 || email.length < 2 || address.length < 2 || city.length < 2 || state.length < 2 || zip.length < 2) {
+    if (!order_content || !address_content || !name || !email || !address || !city || !state || !zip || name.length < 2 || email.length < 2 || address.length < 2 || city.length < 2 || state.length < 2 || zip.length < 2) {
         res.status(400).json({ ok: false, message: 'Invalid data' });
         return;
     }

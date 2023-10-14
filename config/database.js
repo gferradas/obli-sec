@@ -44,9 +44,9 @@ VALUES
 `;
 
 const insertUserSQL = `
-INSERT INTO users (username, salt, password)
+INSERT INTO users (username, salt, password, tfa)
 VALUES
-('admin', '618decb94bd8c6236ec0c4e484bc5266','393c37fa9ccd587ece942b31f8b6af20b9f662bafad566ffc69eb449aaf35169')
+('admin', '618decb94bd8c6236ec0c4e484bc5266','393c37fa9ccd587ece942b31f8b6af20b9f662bafad566ffc69eb449aaf35169', "{}")
 `
 
 const initializeDB = async () => {
@@ -73,8 +73,8 @@ const initializeDB = async () => {
 
         db.database = 'users';
         connection = await mysql.createConnection(db);
-        connection.query('CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255) NOT NULL, salt VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL)');
-        connection.query("DELETE FROM users WHERE username = 'admin'");
+        connection.execute('DROP TABLE IF EXISTS users');
+        connection.query('CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255) NOT NULL, salt VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, tfa json)');
         connection.query(insertUserSQL);
         connection.end();
 
