@@ -1,6 +1,11 @@
 <script>
   import Popup from "./Popup.svelte";
-  import { authenticated, user, client } from "../helpers/writables";
+  import {
+    authenticated,
+    user,
+    client,
+    selectValue,
+  } from "../helpers/writables";
 
   let username = "";
   let password = "";
@@ -26,6 +31,7 @@
 
       $user = username;
       $authenticated = true;
+      $selectValue = "shop";
       console.log(data);
       localStorage.setItem("user", JSON.stringify({ username, password }));
       new Popup({

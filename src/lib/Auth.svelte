@@ -1,14 +1,14 @@
 <script>
-  export let selectValue;
+  import { selectValue } from "../helpers/writables.js";
   import LogIn from "./LogIn.svelte";
   import Register from "./Register.svelte";
 </script>
 
 <section>
-  {#if selectValue === "login"}
+  {#if $selectValue === "login"}
     <LogIn />
   {/if}
-  {#if selectValue === "register"}
+  {#if $selectValue === "register"}
     <Register />
   {/if}
 </section>

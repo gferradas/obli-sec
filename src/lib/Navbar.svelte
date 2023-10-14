@@ -1,9 +1,7 @@
 <script>
-  import { authenticated, user } from "../helpers/writables.js";
+  import { authenticated, user, selectValue } from "../helpers/writables.js";
   import Popup from "./Popup.svelte";
   export let cartViewable = false;
-  export let logout;
-  export let selectValue;
 
   const handleCart = () => {
     if ($authenticated) {
@@ -30,20 +28,35 @@
 </script>
 
 <nav>
-  <a on:click={gotoShop} href="./#shop">Shop</a>
+  <a
+    on:click={() => {
+      $selectValue = "shop";
+    }}
+    href="./#shop">Shop</a
+  >
   {#if $authenticated}
-    <a href="./#cart" on:click={handleCart}>{$user}'s cart</a>
-    <a on:click={logout} href="./#login">Log Out</a>
+    <a
+      href="./#cart"
+      on:click={() => {
+        $selectValue = "cart";
+      }}>Cart</a
+    >
+    <a
+      on:click={() => {
+        $selectValue = "profile";
+      }}
+      href="./#userProfile">{$user}'s profile</a
+    >
   {:else}
     <a
       on:click={() => {
-        selectValue = "login";
+        $selectValue = "login";
       }}
       href="./#login">Login</a
     >
     <a
       on:click={() => {
-        selectValue = "register";
+        $selectValue = "register";
       }}
       href="./#register">Register</a
     >

@@ -1,26 +1,25 @@
 <script>
-  import { cart, authenticated, user, client } from "./helpers/writables";
+  import {
+    cart,
+    authenticated,
+    user,
+    client,
+    tfa,
+    selectValue,
+  } from "./helpers/writables";
   import Auth from "./lib/Auth.svelte";
   import Navbar from "./lib/Navbar.svelte";
   import Tienda from "./lib/Tienda.svelte";
   import Cart from "./lib/Cart.svelte";
   import Popup from "./lib/Popup.svelte";
   import Spinner from "./lib/Spinner.svelte";
+  import UserProfile from "./lib/UserProfile.svelte";
 
-  let loading = true;
+  let loading = false;
   $: cartViewable = false;
-  $: selectValue = "login";
   $cart = JSON.parse(localStorage.getItem("cart")) || [];
 
   let { username, password } = JSON.parse(localStorage.getItem("user")) || {};
-
-  const logout = () => {
-    $authenticated = false;
-    $cart = [];
-    $user = "";
-    localStorage.removeItem("cart");
-    localStorage.removeItem("user");
-  };
 
   const login = async () => {
     try {
@@ -34,6 +33,10 @@
       if (!data.ok) {
         $authenticated = false;
         throw new Error(data.error);
+      }
+
+      if (data.tfa) {
+        $tfa = true;
       }
 
       $authenticated = true;
@@ -55,27 +58,30 @@
   if (username && password) {
     if (username.length > 2 && password.length > 8) {
       login();
+      loading = true;
     }
-  } else {
-    loading = false;
   }
 </script>
 
-<Navbar {logout} bind:cartViewable bind:selectValue />
+<Navbar bind:cartViewable />
 <main>
   {#if loading}
     <Spinner />
   {:else}
-    {#if $authenticated && cartViewable}
+    {#if $authenticated && $selectValue === "cart"}
       <Cart />
     {/if}
 
     {#if !$authenticated}
-      <Auth {selectValue} />
+      <Auth />
     {/if}
 
-    {#if $authenticated && !cartViewable}
+    {#if $selectValue === "shop"}
       <Tienda />
+    {/if}
+
+    {#if $selectValue === "profile"}
+      <UserProfile />
     {/if}
   {/if}
 
