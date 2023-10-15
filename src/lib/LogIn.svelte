@@ -15,7 +15,14 @@
 
   const auth = async () => {
     if (!form.checkValidity() || (username.length < 2 && password.length < 8)) {
-      alert("Invalid data");
+      new Popup({
+        target: document.getElementById("popups"),
+        props: {
+          message: "Invalid username or password",
+          duration: 2000,
+          type: "failed",
+        },
+      });
       return;
     }
 
