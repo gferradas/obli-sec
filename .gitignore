@@ -6,3 +6,4 @@ hash.txt
 *.key
 *compose.yml
 *.pem
+hide_*

@@ -33,5 +33,11 @@ module.exports = {
 		"no-unused-vars": [
 			"warn"
 		],
+		"no-duplicate-imports": ["error", { "includeExports": true }],
+		"camelcase": ["error", { "properties": "always" }],
+		"eqeqeq": ["error", "always"],
+		"init-declarations": ["error", "always"],
+		"no-else-return": ["error", { "allowElseIf": false }],
+		"arrow-spacing": ["error", { "before": true, "after": true }],
 	}
 };
