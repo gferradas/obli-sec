@@ -1,4 +1,4 @@
-const { app, httpsServer, port } = require("./config/server.js")
+const { app, httpsServer, port } = require("./config/server.js");
 const { initializeDB } = require("./config/database.js");
 const fs = require("fs");
 
@@ -21,4 +21,3 @@ initializeDB();
 httpsServer.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
-

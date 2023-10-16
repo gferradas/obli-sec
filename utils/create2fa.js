@@ -1,5 +1,5 @@
-const speakEasy = require('speakeasy');
-const QRCode = require('qrcode');
+const speakEasy = require("speakeasy");
+const QRCode = require("qrcode");
 
 
 const generateSecret = () => {

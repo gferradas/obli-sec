@@ -1,12 +1,12 @@
 const mysql = require("mysql2/promise");
-require('dotenv').config();
+require("dotenv").config();
 
 const dbConfig = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
-    database: 'choferes',
+    database: "choferes",
 };
 
 const createTableSQL = `
@@ -47,7 +47,7 @@ const insertUserSQL = `
 INSERT INTO users (username, salt, password, tfa)
 VALUES
 ('admin', '618decb94bd8c6236ec0c4e484bc5266','393c37fa9ccd587ece942b31f8b6af20b9f662bafad566ffc69eb449aaf35169', "{}")
-`
+`;
 
 const initializeDB = async () => {
     try {
@@ -58,37 +58,37 @@ const initializeDB = async () => {
             password: process.env.DB_PASS,
         };
         let connection = await mysql.createConnection(db);
-        console.log('Connected to MySQL');
-        connection.query('CREATE DATABASE IF NOT EXISTS choferes');
-        connection.query('CREATE DATABASE IF NOT EXISTS users');
-        connection.query('CREATE DATABASE IF NOT EXISTS pedidos');
+        console.log("Connected to MySQL");
+        connection.query("CREATE DATABASE IF NOT EXISTS choferes");
+        connection.query("CREATE DATABASE IF NOT EXISTS users");
+        connection.query("CREATE DATABASE IF NOT EXISTS pedidos");
         connection.end();
 
-        db.database = 'choferes';
+        db.database = "choferes";
         connection = await mysql.createConnection(db);
         connection.query(createTableSQL);
-        connection.query('DELETE FROM choferes');
+        connection.query("DELETE FROM choferes");
         connection.query(insertChoferesSQL);
         connection.end();
 
-        db.database = 'users';
+        db.database = "users";
         connection = await mysql.createConnection(db);
-        connection.execute('DROP TABLE IF EXISTS users');
-        connection.query('CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255) NOT NULL, salt VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, tfa json)');
+        connection.execute("DROP TABLE IF EXISTS users");
+        connection.query("CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255) NOT NULL, salt VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, tfa json)");
         connection.query(insertUserSQL);
         connection.end();
 
-        db.database = 'pedidos';
+        db.database = "pedidos";
         connection = await mysql.createConnection(db);
-        connection.query('CREATE TABLE IF NOT EXISTS pedidos (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255) NOT NULL, order_content TEXT NOT NULL, address_content TEXT NOT NULL)');
+        connection.query("CREATE TABLE IF NOT EXISTS pedidos (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255) NOT NULL, order_content TEXT NOT NULL, address_content TEXT NOT NULL)");
         connection.query("DELETE FROM pedidos");
         connection.end();
 
 
-        console.log('Database initialized');
+        console.log("Database initialized");
     } catch (error) {
         console.log(error);
-        console.log('Error initializing database');
+        console.log("Error initializing database");
     }
 
 };

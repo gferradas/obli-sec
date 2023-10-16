@@ -6,4 +6,3 @@ hash.txt
 *.key
 *compose.yml
 *.pem
-/*.js
