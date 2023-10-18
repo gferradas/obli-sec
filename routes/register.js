@@ -4,6 +4,7 @@ const router = express.Router();
 const { dbConfig } = require("../config/database");
 const mysql = require("mysql2/promise");
 const { generateSalt, hashPassword } = require("../utils/cryptoUtils");
+const { regex } = require("../utils/regex");
 
 const path = "/register";
 
@@ -12,6 +13,11 @@ router.post(path, async (req, res) => {
 
     if (!username || !password || username.length < 2 || password.length < 8) {
         res.status(400).json({ ok: false, message: "Invalid username or password" });
+        return;
+    }
+
+    if (!regex.test(password)) {
+        res.status(400).json({ ok: false, message: "Invalid password" });
         return;
     }
 
