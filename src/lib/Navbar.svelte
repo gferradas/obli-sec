@@ -3,14 +3,6 @@
   import Popup from "./Popup.svelte";
   export let cartViewable = false;
 
-  const handleCart = () => {
-    if ($authenticated) {
-      cartViewable = !cartViewable;
-    } else {
-      alert("Please log in before checking your cart");
-    }
-  };
-
   const gotoShop = () => {
     if (!$authenticated) {
       new Popup({
