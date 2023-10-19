@@ -6,11 +6,30 @@
     client,
     selectValue,
   } from "../helpers/writables";
+  import { onMount } from "svelte";
 
   let username = "";
   let password = "";
+  let passwordInput;
+  const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[_#@$+*.,<>!¡¿?]).{8,30}$/;
 
   let form;
+
+  onMount(() => {
+    passwordInput.setAttribute("pattern", regex.source);
+    passwordInput.addEventListener("input", () => {
+      if (!regex.test(password)) {
+        passwordInput.setCustomValidity(
+          "Password must be 8 to 30 characters long, contain at least one uppercase letter, one lowercase letter, one number and one special character ( _ # @ $ + * . , < > ! ¡ ¿ ? )"
+        );
+        passwordInput.reportValidity();
+        return;
+      }
+
+      passwordInput.setCustomValidity("");
+      passwordInput.reportValidity();
+    });
+  });
 
   const register = async () => {
     if (!form.checkValidity() || username.length < 2 || password.length < 8) {
@@ -75,6 +94,7 @@
     />
     <label for="password">Password:</label>
     <input
+      bind:this={passwordInput}
       bind:value={password}
       type="password"
       name="password"
@@ -82,6 +102,13 @@
       minlength="8"
       required
     />
+    <br />
+    <span
+      >Password must be 8 to 30 characters long, <br />
+      contain at least one uppercase letter,<br />
+      one lowercase letter,<br />
+      one number and one special character [ _ # @ $ + * . , ! ¡ ¿ ? ( ) ]
+    </span>
     <input type="submit" value="Register" />
   </form>
 </div>
