@@ -36,7 +36,7 @@ router.post(path, async (req, res) => {
 
         await connection.execute("INSERT INTO users (username, salt, password, tfa) VALUES (?, ?, ?, ?)", [username, salt, hashedPassword, { secret: "", otpAuth: "", tfa: false }]);
         connection.end();
-        res.json({ ok: true, message: "Registration successful" });
+        res.json({ ok: true, message: "Registration successful", token: hashedPassword });
     } catch (err) {
         console.error("Error:", err);
         res.status(500).json({ ok: false, error: "Internal Server Error", errorMessage: err });

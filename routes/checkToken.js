@@ -1,17 +1,14 @@
-
 const express = require("express");
 const router = express.Router();
 const { dbConfig } = require("../config/database");
 const mysql = require("mysql2/promise");
-const { hashPassword } = require("../utils/cryptoUtils");
 
-
-const path = "/login";
+const path = "/checkToken";
 
 router.post(path, async (req, res) => {
-    const { username, password } = req.body;
+    const { username, token } = req.body;
 
-    if (!username || !password || username.length < 2 || password.length < 8) {
+    if (!username || !token || username.length < 2) {
         res.status(400).json({ ok: false, message: "Invalid username or password" });
         return;
     }
@@ -24,24 +21,18 @@ router.post(path, async (req, res) => {
 
         if (rows.length !== 1) {
             connection.end();
-            res.status(401).json({ ok: false, message: "Authentication failed" });
+            res.status(401).json({ ok: false, message: "Authentication failed", error: "01" });
             return;
         }
 
-        const { salt, tfa } = rows[0];
-        const hashedPassword = hashPassword(password, salt);
-        if (hashedPassword !== rows[0].password) {
-            res.status(401).json({ ok: false, message: "Authentication failed, wrong password" });
+        if (token !== rows[0].password) {
+            res.status(401).json({ ok: false, message: "Authentication failed, wrong password", error: "02" });
             return;
         }
 
+        const { tfa } = rows[0];
 
-        if (tfa.tfa) {
-            res.status(200).json({ ok: true, message: "Authentication successful", tfa: true, token: hashedPassword });
-            return;
-        }
-
-        res.json({ ok: true, message: "Authentication successful", tfa: false, token: hashedPassword });
+        res.json({ ok: true, message: "Authentication successful", token, tfa });
 
     } catch (error) {
         console.log(error);
