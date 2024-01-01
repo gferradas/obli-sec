@@ -8,9 +8,12 @@ const path = "/checkout";
 
 router.post("/checkout", async (req, res) => {
     const { order_content: orderContent, address_content: addressContent } = req.body;
-    const { name, email, address, city, state, zip } = addressContent;
+    const { name, email, address, city } = addressContent;
 
-    if (!orderContent || !addressContent || !name || !email || !address || !city || !state || !zip || name.length < 2 || email.length < 2 || address.length < 2 || city.length < 2 || state.length < 2 || zip.length < 2) {
+    const noData = !orderContent || !addressContent || !name || !email || !address || !city;
+    const invalidData = name.length < 2 || email.length < 2 || address.length < 2 || city.length < 2 || !email.includes("@gmail.com");
+
+    if (noData || invalidData) {
         res.status(400).json({ ok: false, message: "Invalid data" });
         return;
     }

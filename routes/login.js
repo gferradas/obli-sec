@@ -24,7 +24,7 @@ router.post(path, async (req, res) => {
 
         if (rows.length !== 1) {
             connection.end();
-            res.status(401).json({ ok: false, message: "Authentication failed" });
+            res.status(401).json({ ok: false, message: `User ${username} does not exist` });
             return;
         }
 
@@ -41,7 +41,7 @@ router.post(path, async (req, res) => {
             return;
         }
 
-        res.json({ ok: true, message: "Authentication successful", tfa: false, token: hashedPassword });
+        res.status(200).json({ ok: true, message: "Authentication successful", tfa: false, token: hashedPassword });
 
     } catch (error) {
         console.log(error);
